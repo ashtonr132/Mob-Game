@@ -10,7 +10,7 @@ public class RandomObstaclePlacer : PipeObstacleGenerator{
     public override void GenerateObstacles(Pipe pipe)
     {
         float angleStep = pipe.CurveAngle / pipe.CurveSegmentCount;
-        for (int i = 0; i < pipe.CurveSegmentCount; i++)
+        for (int i = 0; i < pipe.CurveSegmentCount - 1; i++)
         {
             PipeObstacles obstacle = Instantiate<PipeObstacles>(
                 ObstaclePrefabs[Random.Range(0, ObstaclePrefabs.Length)]);

@@ -6,7 +6,7 @@ public class Pipe : MonoBehaviour {
 
     public float pipeRadius;
     public int pipeSegmentCount;
-    //public PipeSystem pipeSystem;
+    public PipeSystem pipeSystem;
     private float curveRadius;
     private int curveSegmentCount;
     private Mesh mesh;    
@@ -219,10 +219,10 @@ public class Pipe : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update ()
-    {
-        
+    {       
         Debug.Log(Arr);
     }
+
 
     private void OnDrawGizmos()
     {
