@@ -14,6 +14,7 @@ public class Player : MonoBehaviour {
     private float worldRotation, avatarRotation;
     public float rotationVelocity;
     public MainMenu mainMenu;
+    public GameObject menuCam;
     //public float startVelocity;
     //public float[] accelerations;
     public float acceleration, velocity;
@@ -108,6 +109,7 @@ public class Player : MonoBehaviour {
     {
         mainMenu.EndGame(distanceTraveled);
         period = 0;
-        gameObject.SetActive(false);        
+        gameObject.SetActive(false);
+        menuCam.SetActive(true);
     }
 }

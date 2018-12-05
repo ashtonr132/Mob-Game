@@ -6,12 +6,15 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour {
 
     public Player player;
+    public GameObject menuCam;
+    public GameObject shopCanvas;
     public Text scoreLabel;
 
     public void StartGame()
     {
         player.StartGame();
         gameObject.SetActive(false);
+        menuCam.SetActive(false);
     }
 
     public void QuitGame()
@@ -23,6 +26,16 @@ public class MainMenu : MonoBehaviour {
     {
         scoreLabel.text = "High Score: " + ((int)(distanceTraveled)).ToString();
         gameObject.SetActive(true);
+    }
+
+    public void OpenShop()
+    {
+        shopCanvas.SetActive(true);
+    }
+
+    public void CloseShop()
+    {
+        shopCanvas.SetActive(false);
     }
 
     // Use this for initialization
