@@ -6,15 +6,16 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour {
 
     public Player player;
-    public Text scoreLabel;
-    public GameObject leaderboard;
-    public static int highScore, totalScore;
-    internal Vector2 scr;
+    public Text currScoreT, highScoreT, totalScoreT;
+    public static int highScore, totalScore, currScore;
 
     public void StartGame()
     {
         player.StartGame();
-        gameObject.SetActive(false);
+        foreach (Transform item in transform)
+        {
+            item.gameObject.SetActive(false);
+        }
     }
 
     public void QuitGame()
@@ -24,19 +25,38 @@ public class MainMenu : MonoBehaviour {
 
     public void EndGame(float distanceTraveled)
     {
-        if (distanceTraveled > highScore)
+        foreach (Transform item in transform)
         {
-            highScore = ((int)(distanceTraveled));
+            item.gameObject.SetActive(true);
         }
-        totalScore += (int)distanceTraveled;
-        gameObject.SetActive(true);
-        SaveLoad.Save(new Vector2(highScore, totalScore));
+        if (highScore < currScore)
+        {
+            highScore = currScore;
+        }
+            SaveLoad.Save(highScore, (totalScore + currScore));
+
+        currScore = 0;
     }
 
     // Use this for initialization
     void Start ()
     {
         SaveLoad.Load();
-        scoreLabel.text = "High Score: " + highScore.ToString();
+    }
+
+    private void Update()
+    {
+        if (highScore > currScore)
+        {
+            highScoreT.text = "High Score: " + highScore.ToString();
+
+        }
+        else
+        {
+            highScoreT.text = "High Score: " + currScore.ToString();
+        }
+        totalScoreT.text = "Total Score: " + (totalScore + currScore).ToString();
+        currScoreT.text = "Current Score: " + currScore.ToString();
+
     }
 }

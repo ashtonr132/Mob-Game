@@ -7,56 +7,49 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public static class SaveLoad {
-    
-    private static string path = "/Save.dat";
-    private static BinaryFormatter bf = new BinaryFormatter();
-    private static FileStream file;
-    
-    internal static void Save(Vector2 scr)
+
+    const string fileExtension = ".dat";
+    static string dataPath = Path.Combine(Application.persistentDataPath, "SaveData" + fileExtension);
+
+    internal static void Save(int a, int b)
     {
-        SaveData data = new SaveData();
-        data.Scores.x = scr.x;
-        data.Scores.y = scr.y;
-        file = File.Open(Application.persistentDataPath + path, FileMode.Open);
-        bf.Serialize(file, data);
-        file.Close();
+        BinaryFormatter bf = new BinaryFormatter();
+        SaveData data = new SaveData
+        {
+            highScore = a,
+            totalScore = b
+
+        };
+        using (FileStream fileStream = File.Open(dataPath, FileMode.OpenOrCreate))
+        {
+            bf.Serialize(fileStream, data);
+            fileStream.Close();
+        }
+        MainMenu.highScore = data.highScore;
+        MainMenu.totalScore = data.totalScore;
     }
 
     internal static void Load()
     {
-        if (!File.Exists(Application.persistentDataPath + path))
+        if (File.Exists(dataPath))
         {
-            file = File.Create(Application.persistentDataPath + path);
-        }
-        else
-        {
-            file = File.Open(Application.persistentDataPath + path, FileMode.Open);
-            SaveData data = (SaveData)bf.Deserialize(file);
-            MainMenu.highScore = (int)data.Scores.x;
-            MainMenu.totalScore = (int)data.Scores.y;
-            file.Close();
+            BinaryFormatter bf = new BinaryFormatter();
+            SaveData data;
+            using (FileStream fileStream = File.Open(dataPath, FileMode.Open))
+            {
+                data = (SaveData)bf.Deserialize(fileStream);
+                fileStream.Close();
+            }
+            MainMenu.highScore = data.highScore;
+            MainMenu.totalScore = data.totalScore;
         }
     }
 
 }
+
 [Serializable]
-class SaveData : ISerializable
+public class SaveData
 {
-    [SerializeField]
-    internal Vector2 Scores;
-
-    public SaveData()
-    {
-
-    }
-
-    public SaveData(SerializationInfo info, StreamingContext context)
-    {
-        Scores = (Vector2)info.GetValue("Scores", typeof(Vector2));
-    }
-
-    public void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        info.AddValue("Scores", Scores);
-    }
+    public int totalScore;
+    public int highScore;
 }

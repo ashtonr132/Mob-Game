@@ -19,7 +19,6 @@ public class Player : MonoBehaviour {
     //public float[] accelerations;
     public float acceleration, velocity;
     public float period = 0.0f;
-    public Text scoreLabel;
     public float ButtonCooler  = 0.5f ; // Half a second before reset
     public int ButtonCount  = 0;
 
@@ -47,6 +46,7 @@ public class Player : MonoBehaviour {
     }
 
     private void Update() {
+        MainMenu.currScore = (int)distanceTraveled;
         float delta = velocity * Time.deltaTime;
         distanceTraveled += delta;
         systemRotation += delta * deltaToRotation;
