@@ -6,19 +6,50 @@ public class Pipe : MonoBehaviour {
 
     public float pipeRadius;
     public int pipeSegmentCount;
+    public PipeSystem pipeSystem;
+    private float curveRadius;
+    private int curveSegmentCount;
     private Mesh mesh;    
     private Vector3[] vertices;
     private int[] triangles;
     public float ringDistance;
+    private float curveAngle;
     public float minCurveRadius, maxCurveRadius;
     public int minCurveSegmentCount, maxCurveSegmentCount;
+    private float relativeRotation;
     private Vector2[] uv;
     public PipeObstacleGenerator[] generators;
     public int Arr;
-    public float RelativeRotation { get; private set; }
-    public float CurveRadius { get; private set; }
-    public float CurveAngle { get; private set; }
-    public int CurveSegmentCount { get; private set; }
+    public float RelativeRotation
+    {
+        get
+        {
+            return relativeRotation;
+        }
+    }
+    public float CurveRadius
+    {
+        get
+        {
+            return curveRadius;
+        }
+    }
+
+    public float CurveAngle
+    {
+        get
+        {
+            return curveAngle;
+        }
+    }
+
+    public int CurveSegmentCount
+    {
+        get
+        {
+            return curveSegmentCount;
+        }
+    }
 
     private void Awake()
     {
@@ -28,8 +59,9 @@ public class Pipe : MonoBehaviour {
 
     public void Generate(bool withObstacles = true)
     {
-        CurveRadius = Random.Range(minCurveRadius, maxCurveRadius);
-        CurveSegmentCount = Random.Range(minCurveSegmentCount, maxCurveSegmentCount + 1);
+        curveRadius = Random.Range(minCurveRadius, maxCurveRadius);
+        curveSegmentCount =
+            Random.Range(minCurveSegmentCount, maxCurveSegmentCount + 1);
         mesh.Clear();
         SetVertices();
         SetUV();      
@@ -42,7 +74,44 @@ public class Pipe : MonoBehaviour {
         if (withObstacles)
         {
             Arr = (Random.Range(0, 10000) / 9) % 9;
-            generators[Arr].GenerateObstacles(this);
+
+            if (Arr == 0)
+            {
+                generators[0].GenerateObstacles(this);
+            }
+            if (Arr == 1)
+            {
+                generators[1].GenerateObstacles(this);
+            }
+            if (Arr == 2)
+            {
+                generators[2].GenerateObstacles(this);
+            }
+            if (Arr == 3)
+            {
+                generators[3].GenerateObstacles(this);
+            }
+            if (Arr == 4)
+            {
+                generators[4].GenerateObstacles(this);
+            }
+            if (Arr == 5)
+            {
+                generators[5].GenerateObstacles(this);
+            }
+            if (Arr == 6)
+            {
+                generators[6].GenerateObstacles(this);
+            }
+            if (Arr == 7)
+            {
+                generators[7].GenerateObstacles(this);
+            }
+            if (Arr == 8)
+            {
+                generators[8].GenerateObstacles(this);
+            }
+
         }
     }
 
@@ -61,13 +130,13 @@ public class Pipe : MonoBehaviour {
 
     private void SetVertices()
     {
-        vertices = new Vector3[pipeSegmentCount * CurveSegmentCount * 4];
+        vertices = new Vector3[pipeSegmentCount * curveSegmentCount * 4];
 
-        float uStep = ringDistance / CurveRadius;
-        CurveAngle = uStep * CurveSegmentCount * (360f / (2f * Mathf.PI));
+        float uStep = ringDistance / curveRadius;
+        curveAngle = uStep * curveSegmentCount * (360f / (2f * Mathf.PI));
         CreateFirstQuadRing(uStep);
         int iDelta = pipeSegmentCount * 4;
-        for (int u = 2, i = iDelta; u <= CurveSegmentCount; u++, i += iDelta)
+        for (int u = 2, i = iDelta; u <= curveSegmentCount; u++, i += iDelta)
         {
             CreateQuadRing(u * uStep, i);
         }
@@ -76,14 +145,15 @@ public class Pipe : MonoBehaviour {
 
     public void AlignWith(Pipe pipe)
     {
-        RelativeRotation = Random.Range(0, CurveSegmentCount) * 360f / pipeSegmentCount;
+        relativeRotation =
+            Random.Range(0, curveSegmentCount) * 360f / pipeSegmentCount;
 
         transform.SetParent(pipe.transform, false);
         transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.Euler(0f, 0f, -pipe.CurveAngle);
-        transform.Translate(0f, pipe.CurveRadius, 0f);
-        transform.Rotate(RelativeRotation, 0f, 0f);
-        transform.Translate(0f, -CurveRadius, 0f);
+        transform.localRotation = Quaternion.Euler(0f, 0f, -pipe.curveAngle);
+        transform.Translate(0f, pipe.curveRadius, 0f);
+        transform.Rotate(relativeRotation, 0f, 0f);
+        transform.Translate(0f, -curveRadius, 0f);
         transform.SetParent(pipe.transform.parent);
         transform.localScale = Vector3.one;
     }
@@ -120,7 +190,7 @@ public class Pipe : MonoBehaviour {
 
     private void SetTriangles()
     {
-        triangles = new int[pipeSegmentCount * CurveSegmentCount * 6];
+        triangles = new int[pipeSegmentCount * curveSegmentCount * 6];
         for (int t = 0, i = 0; t < triangles.Length; t += 6, i += 4)
         {
             triangles[t] = i;
@@ -134,10 +204,42 @@ public class Pipe : MonoBehaviour {
     private Vector3 GetPointOnTorus(float u, float v)
     {
         Vector3 p;
-        float r = (CurveRadius + pipeRadius * Mathf.Cos(v));
+        float r = (curveRadius + pipeRadius * Mathf.Cos(v));
         p.x = r * Mathf.Sin(u);
         p.y = r * Mathf.Cos(u);
         p.z = pipeRadius * Mathf.Sin(v);
         return p;
-    }    
+    }
+
+    // Use this for initialization
+    void Start ()
+    {
+        
+    }
+	
+	// Update is called once per frame
+	void Update ()
+    {       
+        Debug.Log(Arr);
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        float uStep = (2f * Mathf.PI) / curveSegmentCount;
+        float vStep = (2f * Mathf.PI) / pipeSegmentCount;
+
+        for (int u = 0; u < curveSegmentCount; u++)
+        {
+            for (int v = 0; v < pipeSegmentCount; v++)
+            {
+                Vector3 point = GetPointOnTorus(u * uStep, v * vStep);
+                Gizmos.color = new Color(
+                    1f,
+                    (float)v / pipeSegmentCount,
+                    (float)u / curveSegmentCount);
+                Gizmos.DrawSphere(point, 0.1f);
+            }
+        }
+    }
 }

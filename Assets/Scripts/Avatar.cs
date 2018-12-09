@@ -28,7 +28,7 @@ public class Avatar : MonoBehaviour {
                 //shape.enabled = false;
                 //trail.enabled = false;
                 //burst.Emit(burst.maxParticles);
-                deathCountdown = 1f;//burst.startLifetime;
+                deathCountdown = 1f;//burst.startLifetime;               
                 Debug.Log("Working");
             }
         }
@@ -70,7 +70,7 @@ public class Avatar : MonoBehaviour {
                 slowtimer = 0;
                 num = 0;
                 speedtimerstart = false;
-                slowtimerstart = false;
+                slowtimerstart = false;               
             }
         }
 

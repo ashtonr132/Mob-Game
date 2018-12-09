@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
@@ -14,22 +15,28 @@ public class Player : MonoBehaviour {
     private float worldRotation, avatarRotation;
     public float rotationVelocity;
     public MainMenu mainMenu;
-    public GameObject menuCam;
     //public float startVelocity;
     //public float[] accelerations;
     public float acceleration, velocity;
     public float period = 0.0f;
     public Text scoreLabel;
+    public float ButtonCooler  = 0.5f ; // Half a second before reset
+    public int ButtonCount  = 0;
 
 
     // Use this for initialization
     public void StartGame()
     {
+        distanceTraveled = 0f;
+        avatarRotation = 0f;
+        systemRotation = 0f;
+        worldRotation = 0f;
         velocity = 4f;
         currentPipe = pipeSystem.SetupFirstPipe();
         SetupCurrentPipe();
         pipeSystem.resetMaterial();
         gameObject.SetActive(true);       
+        
     }
 
     private void Awake()
@@ -54,7 +61,40 @@ public class Player : MonoBehaviour {
             systemRotation = delta * deltaToRotation;
         }
 
-        pipeSystem.transform.localRotation = Quaternion.Euler(0f, 0f, systemRotation);
+        if (Input.GetKeyDown("right") || Input.GetKeyDown("left"))
+        {
+
+            if (ButtonCooler > 0 && ButtonCount == 1/*Number of Taps you want Minus One*/)
+            {
+                print("Double Tap");
+                //Has double tapped
+                rotationVelocity += 360;
+            }
+            else
+            {
+                ButtonCooler =  0.25f; //(Random.Range(0, 5) < 2.5f) ? 0.25f : 0.5f;
+                ButtonCount += 1;
+
+            }
+        }
+
+        if (ButtonCooler > 0)
+        {
+
+                ButtonCooler -= 1 * Time.deltaTime;
+
+            Mathf.Clamp(ButtonCooler, 0, 9999f);
+
+        }
+        else
+        {
+                ButtonCount = 0;
+                rotationVelocity = 180;
+        }
+        
+
+        pipeSystem.transform.localRotation =
+            Quaternion.Euler(0f, 0f, systemRotation);
         UpdateAvatarRotation();
     }
 
@@ -62,6 +102,7 @@ public class Player : MonoBehaviour {
     {
         if (period > 30f)
         {
+            //Do Stuff
             velocity += 0.5f;
             period = 0;
         }
@@ -71,15 +112,19 @@ public class Player : MonoBehaviour {
     private void UpdateAvatarRotation()
     {
         avatarRotation += rotationVelocity * Time.deltaTime * Input.GetAxis("Horizontal");
-        if (avatarRotation < 0f)
-        {
-            avatarRotation += 360f;
-        }
-        else if (avatarRotation >= 360f)
-        {
-            avatarRotation -= 360f;
-        }
+        //if (avatarRotation < 0f)
+        //{
+        //    avatarRotation += 360f;
+        //}
+        //else if (avatarRotation >= 360f)
+        //{
+        //    avatarRotation -= 360f;
+        //}
+
+        avatarRotation = (avatarRotation < 0f) ? avatarRotation + 360 : avatarRotation % 360; 
+
         rotater.localRotation = Quaternion.Euler(avatarRotation, 0f, 0f);
+        
     }
 
     private void SetupCurrentPipe()
@@ -98,10 +143,9 @@ public class Player : MonoBehaviour {
     }
 
     public void Die()
-    {
+    {              
         mainMenu.EndGame(distanceTraveled);
         period = 0;
-        gameObject.SetActive(false);
-        menuCam.SetActive(true);
+        gameObject.SetActive(false);        
     }
 }

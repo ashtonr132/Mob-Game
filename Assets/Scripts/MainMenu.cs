@@ -6,16 +6,14 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour {
 
     public Player player;
-    public GameObject menuCam;
-    public GameObject shopCanvas;
     public Text scoreLabel;
-    public static int totalScore, highScore;
+    public GameObject leaderboard;
+    public int highscore;
 
     public void StartGame()
     {
         player.StartGame();
         gameObject.SetActive(false);
-        menuCam.SetActive(false);
     }
 
     public void QuitGame()
@@ -25,28 +23,27 @@ public class MainMenu : MonoBehaviour {
 
     public void EndGame(float distanceTraveled)
     {
-        scoreLabel.text = "High Score: " + ((int)(distanceTraveled)).ToString();
+        highscore = ((int)(distanceTraveled));       
         gameObject.SetActive(true);
-    }
 
-    public void OpenShop()
-    {
-        shopCanvas.SetActive(true);
-    }
+        if (highscore > PlayerPrefs.GetInt("highscore", 0))
+        {
+            PlayerPrefs.SetInt("highscore", highscore);
+            scoreLabel.text = "High Score: " + highscore.ToString();
+            
+        }
 
-    public void CloseShop()
-    {
-        shopCanvas.SetActive(false);
     }
 
     // Use this for initialization
-    void Start () {
-		
-	}
+    void Start ()
+    {
+        scoreLabel.text = "High Score: " + PlayerPrefs.GetInt("highscore", 0).ToString();
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        
+
     }
 }

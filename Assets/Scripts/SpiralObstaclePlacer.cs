@@ -22,4 +22,14 @@ public class SpiralObstaclePlacer : PipeObstacleGenerator {
             obstacle.Position(pipe, i * angleStep, pipeRotation);
         }
     }
+
+    // Use this for initialization
+    void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
 }
