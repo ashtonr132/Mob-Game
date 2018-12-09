@@ -29,7 +29,7 @@ public class Avatar : MonoBehaviour {
                 //trail.enabled = false;
                 //burst.Emit(burst.maxParticles);
                 deathCountdown = 1f;//burst.startLifetime;               
-                Debug.Log("Working");
+                //Debug.Log("Working");
             }
         }
 
@@ -50,11 +50,6 @@ public class Avatar : MonoBehaviour {
             Destroy(collider.gameObject);
         }
     }
-
-    // Use this for initialization
-    void Start () {
-		
-	}
 
     // Update is called once per frame
     private void Update()

@@ -8,7 +8,8 @@ public class MainMenu : MonoBehaviour {
     public Player player;
     public Text scoreLabel;
     public GameObject leaderboard;
-    public int highscore;
+    public static int highScore, totalScore;
+    internal Vector2 scr;
 
     public void StartGame()
     {
@@ -23,27 +24,19 @@ public class MainMenu : MonoBehaviour {
 
     public void EndGame(float distanceTraveled)
     {
-        highscore = ((int)(distanceTraveled));       
-        gameObject.SetActive(true);
-
-        if (highscore > PlayerPrefs.GetInt("highscore", 0))
+        if (distanceTraveled > highScore)
         {
-            PlayerPrefs.SetInt("highscore", highscore);
-            scoreLabel.text = "High Score: " + highscore.ToString();
-            
+            highScore = ((int)(distanceTraveled));
         }
-
+        totalScore += (int)distanceTraveled;
+        gameObject.SetActive(true);
+        SaveLoad.Save(new Vector2(highScore, totalScore));
     }
 
     // Use this for initialization
     void Start ()
     {
-        scoreLabel.text = "High Score: " + PlayerPrefs.GetInt("highscore", 0).ToString();
-    }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-
+        SaveLoad.Load();
+        scoreLabel.text = "High Score: " + highScore.ToString();
     }
 }

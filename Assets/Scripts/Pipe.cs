@@ -74,44 +74,7 @@ public class Pipe : MonoBehaviour {
         if (withObstacles)
         {
             Arr = (Random.Range(0, 10000) / 9) % 9;
-
-            if (Arr == 0)
-            {
-                generators[0].GenerateObstacles(this);
-            }
-            if (Arr == 1)
-            {
-                generators[1].GenerateObstacles(this);
-            }
-            if (Arr == 2)
-            {
-                generators[2].GenerateObstacles(this);
-            }
-            if (Arr == 3)
-            {
-                generators[3].GenerateObstacles(this);
-            }
-            if (Arr == 4)
-            {
-                generators[4].GenerateObstacles(this);
-            }
-            if (Arr == 5)
-            {
-                generators[5].GenerateObstacles(this);
-            }
-            if (Arr == 6)
-            {
-                generators[6].GenerateObstacles(this);
-            }
-            if (Arr == 7)
-            {
-                generators[7].GenerateObstacles(this);
-            }
-            if (Arr == 8)
-            {
-                generators[8].GenerateObstacles(this);
-            }
-
+            generators[(int)Arr].GenerateObstacles(this);
         }
     }
 
@@ -145,8 +108,7 @@ public class Pipe : MonoBehaviour {
 
     public void AlignWith(Pipe pipe)
     {
-        relativeRotation =
-            Random.Range(0, curveSegmentCount) * 360f / pipeSegmentCount;
+        relativeRotation = Random.Range(0, curveSegmentCount) * 360f / pipeSegmentCount;
 
         transform.SetParent(pipe.transform, false);
         transform.localPosition = Vector3.zero;
@@ -210,36 +172,5 @@ public class Pipe : MonoBehaviour {
         p.z = pipeRadius * Mathf.Sin(v);
         return p;
     }
-
-    // Use this for initialization
-    void Start ()
-    {
-        
-    }
-	
-	// Update is called once per frame
-	void Update ()
-    {       
-        Debug.Log(Arr);
-    }
-
-
-    private void OnDrawGizmos()
-    {
-        float uStep = (2f * Mathf.PI) / curveSegmentCount;
-        float vStep = (2f * Mathf.PI) / pipeSegmentCount;
-
-        for (int u = 0; u < curveSegmentCount; u++)
-        {
-            for (int v = 0; v < pipeSegmentCount; v++)
-            {
-                Vector3 point = GetPointOnTorus(u * uStep, v * vStep);
-                Gizmos.color = new Color(
-                    1f,
-                    (float)v / pipeSegmentCount,
-                    (float)u / curveSegmentCount);
-                Gizmos.DrawSphere(point, 0.1f);
-            }
-        }
-    }
+    
 }

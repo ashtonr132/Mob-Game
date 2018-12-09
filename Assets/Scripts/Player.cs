@@ -93,8 +93,7 @@ public class Player : MonoBehaviour {
         }
         
 
-        pipeSystem.transform.localRotation =
-            Quaternion.Euler(0f, 0f, systemRotation);
+        pipeSystem.transform.localRotation = Quaternion.Euler(0f, 0f, systemRotation);
         UpdateAvatarRotation();
     }
 
