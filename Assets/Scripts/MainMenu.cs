@@ -8,13 +8,9 @@ public class MainMenu : MonoBehaviour {
     public Player player;
     public GameObject menuCam;
     public GameObject shopCanvas;
-    public Text scoreLabel, hsLabel;
-    internal int highScore, totalScore;
+    public Text scoreLabel;
+    public static int totalScore, highScore;
 
-    private void Awake()
-    {
-        GetComponent<SaveLoad>().Load();
-    }
     public void StartGame()
     {
         player.StartGame();
@@ -29,15 +25,8 @@ public class MainMenu : MonoBehaviour {
 
     public void EndGame(float distanceTraveled)
     {
-        if ((int)(distanceTraveled) > highScore)
-        {
-            highScore = (int)(distanceTraveled);
-        }
+        scoreLabel.text = "High Score: " + ((int)(distanceTraveled)).ToString();
         gameObject.SetActive(true);
-        totalScore += (int)(distanceTraveled);
-        scoreLabel.text = "Total Score: " + totalScore.ToString();
-        hsLabel.text = "High Score: " + highScore.ToString();
-        GetComponent<SaveLoad>().Save(new Vector2(highScore, totalScore));
     }
 
     public void OpenShop()
@@ -48,5 +37,16 @@ public class MainMenu : MonoBehaviour {
     public void CloseShop()
     {
         shopCanvas.SetActive(false);
+    }
+
+    // Use this for initialization
+    void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update ()
+    {
+        
     }
 }

@@ -36,8 +36,8 @@ public class SaveLoad : MonoBehaviour
         {
             FileStream file = File.Open(Application.persistentDataPath + path, FileMode.Open);
             SaveData data = (SaveData)bf.Deserialize(file);
-            GetComponent<MainMenu>().highScore = (int)data.Scores.x;
-            GetComponent<MainMenu>().totalScore = (int)data.Scores.y;
+            MainMenu.highScore = (int)data.Scores.x;
+            MainMenu.totalScore = (int)data.Scores.y;
         }
     }
     
