@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour {
         player.StartGame();
         foreach (Transform item in transform)
         {
-            item.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 
@@ -27,7 +27,7 @@ public class MainMenu : MonoBehaviour {
     {
         foreach (Transform item in transform)
         {
-            item.gameObject.SetActive(true);
+            gameObject.SetActive(true);
         }
         if (highScore < currScore)
         {

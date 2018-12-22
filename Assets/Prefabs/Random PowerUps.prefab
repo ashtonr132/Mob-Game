@@ -54,5 +54,5 @@ MonoBehaviour:
   ObstaclePrefabs:
   - {fileID: 114563337596370704, guid: 1aef7f96cd1d96742adf778d3aeb0f2d, type: 2}
   - {fileID: 114492607090289616, guid: deca815bbe03d9446b2206be9874ae67, type: 2}
-  - {fileID: 114122451271964484, guid: 6c4921444b8289e4285c8120c9da83dd, type: 2}
-  Arr: 1
+  - {fileID: 114317671529934980, guid: 19766f6b0bd3d114784fae01d6a0ed14, type: 2}
+  Arr: 0

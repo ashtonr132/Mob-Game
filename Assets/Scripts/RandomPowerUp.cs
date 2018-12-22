@@ -11,7 +11,7 @@ public class RandomPowerUp : PipeObstacleGenerator{
     public override void GenerateObstacles(Pipe pipe)
     {
         float angleStep = pipe.CurveAngle / pipe.CurveSegmentCount;
-        for (int i = 6; i < pipe.CurveSegmentCount; i++)
+        for (int i = 3; i < pipe.CurveSegmentCount; i++)
         {
 
             Arr = (Random.Range(0, 100) / 3) % 3;
@@ -35,7 +35,8 @@ public class RandomPowerUp : PipeObstacleGenerator{
                 obstacle.Position(pipe, 2 * angleStep, pipeRotation);
             } else if (Arr == 3)
             {
-                PipeObstacles obstacle = Instantiate<PipeObstacles>(ObstaclePrefabs[2]);
+                PipeObstacles obstacle = Instantiate<PipeObstacles>(
+                ObstaclePrefabs[2]);
                 float pipeRotation =
                 (Random.Range(0, pipe.pipeSegmentCount) + 0.5f) *
                 360f / pipe.pipeSegmentCount;
